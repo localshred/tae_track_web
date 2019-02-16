@@ -4,6 +4,6 @@ import StudentList from 'src/pages/student-list'
 
 export default () => (
   <Router>
-    <StudentList path='/' />
+    <StudentList path='/students' />
   </Router>
 )

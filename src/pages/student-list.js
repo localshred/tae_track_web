@@ -1,9 +1,9 @@
-import React from 'react'
+import MUIDataTable from 'mui-datatables'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
+import React from 'react'
 import { connect } from 'react-redux'
-import * as studentsRedux from '../redux/students'
-import MUIDataTable from 'mui-datatables'
+import * as studentsRedux from 'src/redux/students'
 
 const tableColumns = [
   { name: 'firstName', label: 'First Name' },
@@ -21,21 +21,18 @@ const tableOptions = {
 }
 
 const StudentList = props => (
-  <div>
-    <MUIDataTable
-      title='Students'
-      data={R.map(studentRowExtractor, props.students)}
-      columns={tableColumns}
-      options={tableOptions}
-    />
-  </div>
+  <MUIDataTable
+    columns={tableColumns}
+    data={R.map(studentRowExtractor, props.students)}
+    options={tableOptions}
+    title='Students'
+  />
 )
 
 StudentList.propTypes = {
   students: PropTypes.arrayOf(
     PropTypes.shape({ firstName: PropTypes.string, lastName: PropTypes.string })
-  ).isRequired,
-  addStudent: PropTypes.func.isRequired
+  ).isRequired
 }
 
 const mapStateToProps = R.applySpec({
