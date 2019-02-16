@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
 import { connect } from 'react-redux'
-import { Creators, stateKey } from '../redux/students'
+import * as studentsRedux from '../redux/students'
 
 const StudentRow = student => (
   <li key={student.firstName}>
@@ -10,51 +10,41 @@ const StudentRow = student => (
   </li>
 )
 
-class StudentList extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      firstName: '',
-      lastName: ''
-    }
+const StudentList = props => {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+
+  const onSubmit = event => {
+    props.addStudent(firstName, lastName)
+    setFirstName(firstName)
+    setLastName(lastName)
   }
 
-  handleUpdate = key => event => this.setState({ [key]: event.target.value })
-
-  onSubmit = event => {
-    this.props.addStudent(this.state.firstName, this.state.lastName)
-    this.setState({
-      firstName: '',
-      lastName: ''
-    })
-  }
-
-  render () {
-    return (
+  return (
+    <div>
+      <h2>Students</h2>
       <div>
-        <h2>Students</h2>
         <div>
           <input
-            value={this.state.firstName}
-            onChange={this.handleUpdate('firstName')}
+            value={firstName}
+            onChange={event => setFirstName(event.target.value)}
           />
+        </div>
+        <div>
           <input
-            value={this.state.lastName}
-            onChange={this.handleUpdate('lastName')}
+            value={lastName}
+            onChange={event => setLastName(event.target.value)}
           />
-          <button onClick={this.onSubmit} type='button'>
+        </div>
+        <div>
+          <button onClick={onSubmit} type='button'>
             Submit
           </button>
         </div>
-        <ul>
-          {R.pipe(
-            R.propOr([], 'students'),
-            R.map(StudentRow)
-          )(this.props)}
-        </ul>
       </div>
-    )
-  }
+      <ul>{R.pipe(R.propOr([], 'students'), R.map(StudentRow))(props)}</ul>
+    </div>
+  )
 }
 
 StudentList.propTypes = {
@@ -64,17 +54,12 @@ StudentList.propTypes = {
   addStudent: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => {
-  console.log({ state })
-  return { students: state[stateKey].records }
-}
-
-const mapDispatchToProps = dispatch => ({
-  addStudent: (firstName, lastName) =>
-    dispatch(Creators.addStudent(firstName, lastName))
+const mapStateToProps = R.applySpec({
+  students: studentsRedux.Selectors.students
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StudentList)
+const mapDispatchToProps = dispatch => ({
+  addStudent: R.pipe(studentsRedux.Creators.addStudent, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentList)

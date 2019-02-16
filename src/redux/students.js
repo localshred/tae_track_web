@@ -10,6 +10,10 @@ const { Types, Creators } = createActions({
   fetchStudents: []
 })
 
+const Selectors = {
+  students: R.path([stateKey, 'records'])
+}
+
 const addStudent = (state, { firstName, lastName }) => {
   const newRecords = state.records.concat([{ firstName, lastName }])
   return R.assoc('records', newRecords, state)
@@ -22,4 +26,4 @@ const reducers = createReducer(initialState, {
   [Types.FETCH_STUDENTS]: fetchStudents
 })
 
-export { Types, Creators, stateKey, reducers }
+export { Creators, reducers, Selectors, stateKey, Types }
