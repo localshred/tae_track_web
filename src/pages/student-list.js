@@ -1,51 +1,35 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
 import { connect } from 'react-redux'
 import * as studentsRedux from '../redux/students'
+import MUIDataTable from 'mui-datatables'
 
-const StudentRow = student => (
-  <li key={student.firstName}>
-    {student.firstName} {student.lastName}
-  </li>
-)
+const tableColumns = [
+  { name: 'firstName', label: 'First Name' },
+  { name: 'lastName', label: 'Last Name' }
+]
 
-const StudentList = props => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+const columnNames = R.map(R.prop('name'), tableColumns)
 
-  const onSubmit = event => {
-    props.addStudent(firstName, lastName)
-    setFirstName(firstName)
-    setLastName(lastName)
-  }
+const studentRowExtractor = student => R.props(columnNames, student)
 
-  return (
-    <div>
-      <h2>Students</h2>
-      <div>
-        <div>
-          <input
-            value={firstName}
-            onChange={event => setFirstName(event.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            value={lastName}
-            onChange={event => setLastName(event.target.value)}
-          />
-        </div>
-        <div>
-          <button onClick={onSubmit} type='button'>
-            Submit
-          </button>
-        </div>
-      </div>
-      <ul>{R.pipe(R.propOr([], 'students'), R.map(StudentRow))(props)}</ul>
-    </div>
-  )
+const tableOptions = {
+  print: false,
+  selectableRows: false,
+  viewColumns: false
 }
+
+const StudentList = props => (
+  <div>
+    <MUIDataTable
+      title='Students'
+      data={R.map(studentRowExtractor, props.students)}
+      columns={tableColumns}
+      options={tableOptions}
+    />
+  </div>
+)
 
 StudentList.propTypes = {
   students: PropTypes.arrayOf(
@@ -58,8 +42,6 @@ const mapStateToProps = R.applySpec({
   students: studentsRedux.Selectors.students
 })
 
-const mapDispatchToProps = dispatch => ({
-  addStudent: R.pipe(studentsRedux.Creators.addStudent, dispatch)
-})
+const mapDispatchToProps = null
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentList)
