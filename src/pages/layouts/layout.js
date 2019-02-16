@@ -17,32 +17,6 @@ import Typography from '@material-ui/core/Typography'
 import { Link, Match } from '@reach/router'
 import Routes from 'src/routes'
 
-const drawerWidth = 240
-
-const styles = theme => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0
-  },
-  drawerPaper: {
-    width: drawerWidth
-  },
-  navLink: {
-    textDecoration: 'none'
-  },
-  root: {
-    display: 'flex'
-  },
-  toolbar: theme.mixins.toolbar
-})
-
 const Layout = ({ classes, children }) => (
   <div className={classes.root}>
     <CssBaseline />
@@ -98,23 +72,42 @@ Layout.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
+const drawerWidth = 240
+
+const styles = theme => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: drawerWidth
+  },
+  navLink: {
+    textDecoration: 'none'
+  },
+  root: {
+    display: 'flex'
+  },
+  toolbar: theme.mixins.toolbar
+})
+
 const NavItem = props => (
   <Match path={props.matchPath}>
-    {({ match }) => {
-      console.log({ match, text: props.text })
-      return (
-        <Link
-          to={props.to}
-          title={props.text}
-          className={props.classes.navLink}
-        >
-          <ListItem button selected={!!match}>
-            <ListItemIcon>{props.icon}</ListItemIcon>
-            <ListItemText primary={props.text} />
-          </ListItem>
-        </Link>
-      )
-    }}
+    {({ match }) => (
+      <Link to={props.to} title={props.text} className={props.classes.navLink}>
+        <ListItem button selected={!!match}>
+          <ListItemIcon>{props.icon}</ListItemIcon>
+          <ListItemText primary={props.text} />
+        </ListItem>
+      </Link>
+    )}
   </Match>
 )
 
