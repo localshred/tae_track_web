@@ -1,5 +1,7 @@
 import * as R from 'ramda'
 
+export const boolToString = bool => (bool ? 'Yes' : 'No')
+
 export const tableOptions = {
   print: false,
   selectableRows: false,
