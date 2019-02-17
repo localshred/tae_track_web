@@ -1,14 +1,18 @@
 import React from 'react'
-import { Provider } from 'react-redux'
+import { Provider as ReduxProvider } from 'react-redux'
+import { ApolloProvider } from 'react-apollo'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { store } from 'src/redux'
-import theme from 'src/theme'
 import Layout from 'src/pages/layouts/layout'
+import theme from 'src/theme'
+import { client } from 'src/services/graphql/client'
 
 export default () => (
-  <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <Layout />
-    </MuiThemeProvider>
-  </Provider>
+  <ReduxProvider store={store}>
+    <ApolloProvider client={client}>
+      <MuiThemeProvider theme={theme}>
+        <Layout />
+      </MuiThemeProvider>
+    </ApolloProvider>
+  </ReduxProvider>
 )
