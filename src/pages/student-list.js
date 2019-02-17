@@ -1,13 +1,15 @@
 import MUIDataTable from 'mui-datatables'
-import PropTypes from 'prop-types'
+import { StudentsQuery } from 'src/services/students'
 import * as R from 'ramda'
 import React from 'react'
-import { connect } from 'react-redux'
-import * as studentsRedux from 'src/redux/students'
 
 const tableColumns = [
   { name: 'firstName', label: 'First Name' },
-  { name: 'lastName', label: 'Last Name' }
+  { name: 'lastName', label: 'Last Name' },
+  { name: 'age', label: 'Age' },
+  { name: 'rank', label: 'Rank' },
+  { name: 'billingCurrentThrough', label: 'Billing Current?' },
+  { name: 'testingEligibilityStartsAt', label: 'Testing Eligibility Start' }
 ]
 
 const columnNames = R.map(R.prop('name'), tableColumns)
@@ -20,25 +22,15 @@ const tableOptions = {
   viewColumns: false
 }
 
-const StudentList = props => (
+const StudentsTable = props => (
   <MUIDataTable
     columns={tableColumns}
-    data={R.map(studentRowExtractor, props.students)}
+    data={R.map(studentRowExtractor, R.pathOr([], ['data', 'students'], props))}
     options={tableOptions}
     title='Students'
   />
 )
 
-StudentList.propTypes = {
-  students: PropTypes.arrayOf(
-    PropTypes.shape({ firstName: PropTypes.string, lastName: PropTypes.string })
-  ).isRequired
-}
+const StudentList = _props => <StudentsQuery onData={StudentsTable} />
 
-const mapStateToProps = R.applySpec({
-  students: studentsRedux.Selectors.students
-})
-
-const mapDispatchToProps = null
-
-export default connect(mapStateToProps, mapDispatchToProps)(StudentList)
+export default StudentList

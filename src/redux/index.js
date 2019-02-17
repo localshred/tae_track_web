@@ -1,11 +1,14 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { stateKey, reducers as studentsReducer } from './students'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
 import logger from 'redux-logger'
 
-const reducer = combineReducers({ [stateKey]: studentsReducer })
+const reducer = combineReducers({})
 
 const initialState = {}
 
-const middleware = applyMiddleware(logger)
+const middleware = [logger]
 
-export const store = createStore(reducer, initialState, middleware)
+export const store = createStore(
+  reducer,
+  initialState,
+  applyMiddleware(...middleware)
+)
