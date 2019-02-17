@@ -7,8 +7,20 @@ const { renderRows, tableColumns } = prepareDataTable(
   ['data', 'contacts'],
   [
     { name: 'name', label: 'Name' },
-    { name: 'email', label: 'Email' },
-    { name: 'phone', label: 'Phone' },
+    {
+      name: 'email',
+      label: 'Email',
+      options: {
+        customBodyRender: email => <a href={`mailto:${email}`}>{email}</a>
+      }
+    },
+    {
+      name: 'phone',
+      label: 'Phone',
+      options: {
+        customBodyRender: phone => <a href={`tel:${phone}`}>{phone}</a>
+      }
+    },
     { name: 'insertedAt', label: 'Inserted At' },
     { name: 'updatedAt', label: 'Updated At' }
   ]
