@@ -1,6 +1,7 @@
 import { distanceInWordsToNow, format, isFuture, parse } from 'date-fns'
 import MUIDataTable from 'mui-datatables'
 import * as R from 'ramda'
+import { navigate } from '@reach/router'
 import React from 'react'
 import { prepareDataTable, tableOptions } from 'src/lib/datatable-helpers'
 import { StudentsQuery } from 'src/services/students'
@@ -59,11 +60,23 @@ const { renderRows, tableColumns } = prepareDataTable(selector, [
   }
 ])
 
+const onRowClick = R.curry((props, _rowData, { rowIndex: index }) => {
+  const id = R.pipe(
+    R.pathOr([], ['data', 'students']),
+    R.nth(index),
+    R.propOr(null, 'id')
+  )(props)
+
+  if (id) {
+    navigate(`/students/${id}`)
+  }
+})
+
 const StudentsTable = props => (
   <MUIDataTable
     columns={tableColumns}
     data={renderRows(props)}
-    options={tableOptions}
+    options={R.merge(tableOptions, { onRowClick: onRowClick(props) })}
     title='Students'
   />
 )
