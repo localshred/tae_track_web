@@ -1,26 +1,35 @@
-import { format, isFuture, parse } from 'date-fns'
+import { distanceInWordsToNow, format, isFuture, parse } from 'date-fns'
 import MUIDataTable from 'mui-datatables'
 import * as R from 'ramda'
 import React from 'react'
-import {
-  prepareDataTable,
-  tableOptions,
-  boolToString
-} from 'src/lib/datatable-helpers'
+import { prepareDataTable, tableOptions } from 'src/lib/datatable-helpers'
 import { StudentsQuery } from 'src/services/students'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 
+const expired = 'Expired'
+
 const renderBillingCurrentThrough = billingCurrentThrough => {
   if (!billingCurrentThrough) {
-    return boolToString(false)
+    return expired
   }
   const parsedDate = parse(billingCurrentThrough)
-  const isCurrent = isFuture(parsedDate)
   const formattedDate = format(parsedDate, 'YYYY-MM-DD')
+  const isCurrent = isFuture(parsedDate)
+
+  if (!isCurrent) {
+    return (
+      <Tooltip title={`Billing expired on ${formattedDate}`}>
+        <Typography variant='body1'>Expired</Typography>
+      </Tooltip>
+    )
+  }
+
   return (
     <Tooltip title={`Billing expires on ${formattedDate}`}>
-      <Typography body1>{boolToString(isCurrent)}</Typography>
+      <Typography variant='body1'>
+        ~{distanceInWordsToNow(parsedDate)}
+      </Typography>
     </Tooltip>
   )
 }
@@ -30,27 +39,25 @@ const renderTestingEligibilityStartsAt = testingEligibilityStartsAt =>
     testingEligibilityStartsAt
   )
 
-const { renderRows, tableColumns } = prepareDataTable(
-  ['data', 'students'],
-  [
-    { name: 'firstName', label: 'First Name' },
-    { name: 'lastName', label: 'Last Name' },
-    { name: 'age', label: 'Age' },
-    { name: 'rank', label: 'Rank' },
-    {
-      name: 'billingCurrentThrough',
-      label: 'Billing Current?',
-      options: { customBodyRender: renderBillingCurrentThrough }
-    },
-    {
-      name: 'testingEligibilityStartsAt',
-      label: 'Testing Eligibility Start',
-      options: {
-        customBodyRender: renderTestingEligibilityStartsAt
-      }
+const selector = ['data', 'students']
+const { renderRows, tableColumns } = prepareDataTable(selector, [
+  { name: 'firstName', label: 'First Name' },
+  { name: 'lastName', label: 'Last Name' },
+  { name: 'age', label: 'Age' },
+  { name: 'rank', label: 'Rank' },
+  {
+    name: 'billingCurrentThrough',
+    label: 'Next Billing Date',
+    options: { customBodyRender: renderBillingCurrentThrough }
+  },
+  {
+    name: 'testingEligibilityStartsAt',
+    label: 'Testing Eligibility Start',
+    options: {
+      customBodyRender: renderTestingEligibilityStartsAt
     }
-  ]
-)
+  }
+])
 
 const StudentsTable = props => (
   <MUIDataTable
