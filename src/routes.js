@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link, Router } from '@reach/router'
-import ContactList from 'src/pages/contacts/list'
-import LessonList from 'src/pages/lessons/list'
-import StudentList from 'src/pages/students/list'
+import ContactsList from 'src/pages/contacts/list'
+import LessonsList from 'src/pages/lessons/list'
+import StudentsList from 'src/pages/students/list'
 import Typography from '@material-ui/core/Typography'
 
 const NotFound = props => (
@@ -18,8 +18,8 @@ const NotFound = props => (
 export default () => (
   <Router>
     <NotFound default />
-    <ContactList path='/contacts' />
-    <LessonList path='/lessons' />
-    <StudentList path='/students' />
+    <ContactsList path='/contacts' />
+    <LessonsList path='/lessons' />
+    <StudentsList path='/students' />
   </Router>
 )
