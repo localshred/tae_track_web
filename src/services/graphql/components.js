@@ -38,6 +38,8 @@ export const renderQueryProp = ({ onData, onError, onLoading }) =>
     [R.T, renderData(onData)]
   ])
 
-export const renderQuery = query => props => (
-  <Query query={query}>{renderQueryProp(props)}</Query>
+export const RenderQuery = props => (
+  <Query query={props.query} variables={R.propOr({}, 'variables', props)}>
+    {renderQueryProp(props)}
+  </Query>
 )
