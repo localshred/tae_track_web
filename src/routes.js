@@ -3,6 +3,7 @@ import { Link, Router } from '@reach/router'
 import ContactsList from 'src/pages/contacts/list'
 import LessonsList from 'src/pages/lessons/list'
 import StudentsList from 'src/pages/students/list'
+import StudentShow from 'src/pages/students/show'
 import Typography from '@material-ui/core/Typography'
 
 const NotFound = props => (
@@ -21,5 +22,6 @@ export default () => (
     <ContactsList path='/contacts' />
     <LessonsList path='/lessons' />
     <StudentsList path='/students' />
+    <StudentShow path='/students/:id' />
   </Router>
 )
