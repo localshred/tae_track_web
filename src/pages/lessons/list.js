@@ -28,6 +28,6 @@ const LessonsTable = props => (
   />
 )
 
-const LessonList = _props => <LessonsQuery onData={LessonsTable} />
+const LessonsList = _props => <LessonsQuery onData={LessonsTable} />
 
-export default LessonList
+export default LessonsList

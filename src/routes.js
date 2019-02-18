@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link, Router } from '@reach/router'
-import ContactList from 'src/pages/contact-list'
-import LessonList from 'src/pages/lesson-list'
-import StudentList from 'src/pages/student-list'
+import ContactList from 'src/pages/contacts/list'
+import LessonList from 'src/pages/lessons/list'
+import StudentList from 'src/pages/students/list'
 import Typography from '@material-ui/core/Typography'
 
 const NotFound = props => (

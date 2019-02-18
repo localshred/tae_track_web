@@ -35,6 +35,6 @@ const ContactsTable = props => (
   />
 )
 
-const ContactList = _props => <ContactsQuery onData={ContactsTable} />
+const ContactsList = _props => <ContactsQuery onData={ContactsTable} />
 
-export default ContactList
+export default ContactsList

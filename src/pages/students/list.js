@@ -81,6 +81,6 @@ const StudentsTable = props => (
   />
 )
 
-const StudentList = _props => <StudentsQuery onData={StudentsTable} />
+const StudentsList = _props => <StudentsQuery onData={StudentsTable} />
 
-export default StudentList
+export default StudentsList
