@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import * as R from 'ramda'
 import React from 'react'
 import { Query } from 'react-apollo'
@@ -43,3 +44,11 @@ export const RenderQuery = props => (
     {renderQueryProp(props)}
   </Query>
 )
+
+RenderQuery.propTypes = {
+  onData: PropTypes.oneOfType([PropTypes.func, PropTypes.node]).isRequired,
+  onError: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+  onLoading: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+  query: PropTypes.string.isRequired,
+  variables: PropTypes.object.isRequired
+}
